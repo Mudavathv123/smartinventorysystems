@@ -1,20 +1,6 @@
 -- Flyway Migration: Seed data (10 rows per table)
 -- Note: Password hashes are BCrypt hashes for the string "password"
 
--- Users (10)
-INSERT INTO users (username, password_hash, role, is_active, created_at, failed_login_attempts)
-VALUES
- ('user1', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_ADMIN', TRUE, NOW(), 0),
- ('user2', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_MANAGER', TRUE, NOW(), 0),
- ('user3', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_CASHIER', TRUE, NOW(), 0),
- ('user4', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_ADMIN', TRUE, NOW(), 0),
- ('user5', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_MANAGER', TRUE, NOW(), 0),
- ('user6', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_CASHIER', TRUE, NOW(), 0),
- ('user7', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_ADMIN', TRUE, NOW(), 0),
- ('user8', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_MANAGER', TRUE, NOW(), 0),
- ('user9', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_CASHIER', TRUE, NOW(), 0),
- ('user10', '$2a$10$7EqJtq98hPqEX7fNZaFWoOHi3yH5G6b9fVUNYFQ2p1hFP/2qWfS/S', 'ROLE_MANAGER', TRUE, NOW(), 0);
-
 -- Suppliers (10)
 INSERT INTO suppliers (name, email, phone, address, contact_person, is_active, created_at)
 VALUES
