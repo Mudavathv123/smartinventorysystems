@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 import com.smartretails.backend.dto.ProductDto;
 import com.smartretails.backend.dto.PurchaseOrderDto;
 import com.smartretails.backend.dto.PurchaseOrderItemDto;
+import com.smartretails.backend.dto.SaleDto;
 import com.smartretails.backend.dto.StockBatchDto;
 import com.smartretails.backend.dto.SupplierDto;
 import com.smartretails.backend.entity.Product;
 import com.smartretails.backend.entity.PurchaseOrder;
 import com.smartretails.backend.entity.PurchaseOrderItem;
+import com.smartretails.backend.entity.Sale;
 import com.smartretails.backend.entity.StockBatch;
 import com.smartretails.backend.entity.Supplier;
 
@@ -34,6 +36,20 @@ public final class DtoMapper {
                 .taxRate(p.getTaxRate())
                 .createdAt(p.getCreatedAt())
                 .updatedAt(p.getUpdatedAt())
+                .build();
+    }
+
+
+    public static SaleDto toSaleDto(Sale s) {
+        if(s == null) return null;
+        return SaleDto.builder()
+                .id(s.getId())
+                .cashierId(s.getCashierId())
+                .total(s.getTotal())
+                .taxTotal(s.getTaxTotal())
+                .discountTotal(s.getDiscountTotal())
+                .paymentMode(s.getPaymentMode() != null ? s.getPaymentMode().name()   : null)
+                .createdAt(s.getCreatedAt())
                 .build();
     }
 

@@ -61,6 +61,7 @@ public class SecurityConfig {
 
                         // suppliers
                         .requestMatchers("/api/suppliers/**").hasRole("ADMIN")
+                        .requestMatchers("/api/sales/**").permitAll()
 
                         // everything else must be authenticated
                         .anyRequest().authenticated())

@@ -15,7 +15,6 @@ com\smartretails\backend\service\impl\SupplierServiceImpl.class
 com\smartretails\backend\repository\ProductRepository.class
 com\smartretails\backend\repository\PurchaseOrderRepository.class
 com\smartretails\backend\security\JwtAuthenticationFilter.class
-com\smartretails\backend\controller\PurchaseOrderItemController.class
 com\smartretails\backend\dto\SignupResponse.class
 com\smartretails\backend\service\CustomUserDetailsService.class
 com\smartretails\backend\entity\Supplier.class
@@ -35,7 +34,6 @@ com\smartretails\backend\entity\PurchaseOrderItem.class
 com\smartretails\backend\dto\ProductCreateRequest.class
 com\smartretails\backend\entity\StockBatch.class
 com\smartretails\backend\service\PurchaseOrderItemService.class
-com\smartretails\backend\controller\ProductController.class
 com\smartretails\backend\entity\User$Role.class
 com\smartretails\backend\entity\User$UserBuilder.class
 com\smartretails\backend\dto\PurchaseOrderItemRequest$PurchaseOrderItemRequestBuilder.class
@@ -60,11 +58,9 @@ com\smartretails\backend\dto\SupplierRequest.class
 com\smartretails\backend\dto\StockBatchRequest.class
 com\smartretails\backend\exception\GlobalExceptionHandler.class
 com\smartretails\backend\service\SupplierService.class
-com\smartretails\backend\mapper\DtoMapper.class
 com\smartretails\backend\dto\SupplierRequest$SupplierRequestBuilder.class
 com\smartretails\backend\entity\Product$ProductBuilder.class
 com\smartretails\backend\entity\Product.class
-com\smartretails\backend\controller\InventoryController.class
 com\smartretails\backend\dto\ProductCreateRequest$ProductCreateRequestBuilder.class
 com\smartretails\backend\service\impl\PurchaseOrderItemServiceImpl.class
 com\smartretails\backend\service\impl\InventoryServiceImpl.class
