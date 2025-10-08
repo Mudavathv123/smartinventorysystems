@@ -15,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE (:sku IS NULL OR p.sku LIKE %:sku%) AND (:name IS NULL OR p.name LIKE %:name%)")
     Page<Product> search(@Param("sku") String sku, @Param("name") String name, Pageable pageable);
+
+    Page<Product> findByIsActiveTrue(Pageable pageable);
 }

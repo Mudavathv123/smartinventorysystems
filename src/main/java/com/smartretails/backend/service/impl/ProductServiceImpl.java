@@ -13,6 +13,9 @@ import com.smartretails.backend.dto.ProductDto;
 import com.smartretails.backend.entity.Product;
 import com.smartretails.backend.mapper.DtoMapper;
 import com.smartretails.backend.repository.ProductRepository;
+import com.smartretails.backend.repository.PurchaseOrderItemRepository;
+import com.smartretails.backend.repository.SaleItemRepository;
+import com.smartretails.backend.repository.StockBatchRepository;
 import com.smartretails.backend.service.ProductService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productJpaRepository;
+    private final StockBatchRepository stockBatchRepository;
+    private final PurchaseOrderItemRepository purchaseOrderItemRepository;
+    private final SaleItemRepository saleItemRepository;
 
     public PageResponse<ProductDto> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
@@ -90,6 +96,21 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) {
         return productJpaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found!!"));
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        Product product = getProductById(id);
+
+        boolean hasStock = !stockBatchRepository.findByProduct_Id(id).isEmpty();
+        boolean usedInPoItems = purchaseOrderItemRepository.existsByProduct_Id(id);
+        boolean usedInSaleItems = saleItemRepository.existsByProductId(id);
+
+        if (hasStock || usedInPoItems || usedInSaleItems) {
+            throw new ValidationException("Cannot delete product with references in stcok, purchase orders, or sales");
+        }
+
+        productJpaRepository.delete(product);
     }
 
 }

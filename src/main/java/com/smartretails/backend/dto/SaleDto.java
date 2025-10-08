@@ -2,6 +2,7 @@ package com.smartretails.backend.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,8 @@ public class SaleDto {
     private String paymentMode;
 
     private LocalDateTime createdAt;
+
+    private List<SaleItemDto> items;
 
 
 }
