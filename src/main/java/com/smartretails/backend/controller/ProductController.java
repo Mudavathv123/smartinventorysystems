@@ -3,6 +3,7 @@ package com.smartretails.backend.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success(resp));
     }
 
-    @GetMapping("/SearchProducts")
+    @GetMapping("/search-products")
     public ResponseEntity<ApiResponse<PageResponse<ProductDto>>> search(@RequestParam(required = false) String sku,
             @RequestParam(required = false) String name, @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -86,6 +87,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductDto>> getProductById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(ApiResponse.success(DtoMapper.toProductDto(productRepository.getProductById(id))));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
+        productRepository.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

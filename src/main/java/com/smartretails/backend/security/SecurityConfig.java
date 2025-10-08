@@ -2,6 +2,7 @@ package com.smartretails.backend.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,29 +43,51 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // public
-                        .requestMatchers("/auth/**").permitAll()
+                        // 🔓 Authentication APIs — open to everyone
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/signup").hasRole("ADMIN")
 
-                        // product APIs
-                        .requestMatchers("/api/products/**").hasAnyRole("ADMIN", "MANAGER", "CASHIER") // default rule
+                        // 🛍️ Product APIs
+                        .requestMatchers(HttpMethod.GET, "/api/products/search-products", "/api/products/{id}")
+                        .hasAnyRole("ADMIN", "MANAGER", "CASHIER") // view products
+                        .requestMatchers(HttpMethod.GET, "/api/products/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/products/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**")
+                        .hasRole("ADMIN")
 
-                        // stock APIs
-                        .requestMatchers("/api/stock/**").hasAnyRole("ADMIN", "MANAGER")
-
-                        // search/product details (accessible to all roles)
-                        .requestMatchers("/api/products/search", "/api/products/{id}")
-                        .hasAnyRole("ADMIN", "MANAGER", "CASHIER")
-
-                        // purchase orders
-                        .requestMatchers("/api/purchase-orders", "/api/purchase-order-items")
+                        // Stock / Inventory APIs
+                        .requestMatchers("/api/stock/**")
                         .hasAnyRole("ADMIN", "MANAGER")
 
-                        // suppliers
-                        .requestMatchers("/api/suppliers/**").hasRole("ADMIN")
-                        .requestMatchers("/api/sales/**").permitAll()
+                        // Purchase Order & Order Item APIs
+                        .requestMatchers("/api/purchase-orders/**", "/api/purchase-order-items/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
 
-                        // everything else must be authenticated
+                        // Supplier APIs
+                        .requestMatchers("/api/suppliers/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        // Sales & Sales Item APIs
+                        .requestMatchers(HttpMethod.POST, "/api/sales/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "CASHIER") // for creating sales
+                        .requestMatchers(HttpMethod.GET, "/api/sales/**")
+                        .hasAnyRole("ADMIN", "MANAGER") // for viewing reports
+
+                        // User Management APIs
+                        .requestMatchers("/api/users/**")
+                        .hasRole("ADMIN")
+
+                        // Reports
+                        .requestMatchers("/api/reports/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        // Default rule — all others must be authenticated
                         .anyRequest().authenticated())
+
                 .userDetailsService(customUserDetailsService)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -7,4 +7,5 @@ import com.smartretails.backend.entity.StockBatch;
 public interface InventoryService {
     List<StockBatch> geStockBatchs(Long productId);
     StockBatch addBatch(StockBatch batch);
+    int decrementStock(Long productId, int qty);
 }

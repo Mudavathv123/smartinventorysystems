@@ -8,12 +8,14 @@ import com.smartretails.backend.dto.ProductDto;
 import com.smartretails.backend.dto.PurchaseOrderDto;
 import com.smartretails.backend.dto.PurchaseOrderItemDto;
 import com.smartretails.backend.dto.SaleDto;
+import com.smartretails.backend.dto.SaleItemDto;
 import com.smartretails.backend.dto.StockBatchDto;
 import com.smartretails.backend.dto.SupplierDto;
 import com.smartretails.backend.entity.Product;
 import com.smartretails.backend.entity.PurchaseOrder;
 import com.smartretails.backend.entity.PurchaseOrderItem;
 import com.smartretails.backend.entity.Sale;
+import com.smartretails.backend.entity.SaleItem;
 import com.smartretails.backend.entity.StockBatch;
 import com.smartretails.backend.entity.Supplier;
 
@@ -39,6 +41,21 @@ public final class DtoMapper {
                 .build();
     }
 
+    public static SaleItemDto toSaleItemDto(SaleItem i) {
+        if(i == null) return null;
+        Product p = i.getProduct();
+        return SaleItemDto.builder()
+                .id(i.getId())
+                .productId(p != null ? p.getId() : null)
+                .quantity(i.getQuantity())
+                .productName(p != null ? p.getName() : null)
+                .productSku(p != null ? p.getSku() : null)
+                .unitPrice(i.getUnitPrice())
+                .taxRate(i.getTaxRate())
+                .build();
+                
+    }
+
 
     public static SaleDto toSaleDto(Sale s) {
         if(s == null) return null;
@@ -50,6 +67,7 @@ public final class DtoMapper {
                 .discountTotal(s.getDiscountTotal())
                 .paymentMode(s.getPaymentMode() != null ? s.getPaymentMode().name()   : null)
                 .createdAt(s.getCreatedAt())
+                .items(mapList(s.getItems(), DtoMapper::toSaleItemDto))
                 .build();
     }
 
