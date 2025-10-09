@@ -1,5 +1,7 @@
 package com.smartretails.backend.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +43,12 @@ public class SupplierController {
                 .build();
         return ResponseEntity.ok(ApiResponse.success("Supplier created",
                 DtoMapper.toSupplierDto(supplierService.createSupplier(supplier))));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<SupplierDto>>> getAllSuppliers() {
+        return ResponseEntity.ok(
+                ApiResponse.success("Suppliers fetched successfully", supplierService.getAllSuppliers()));
     }
 
     @GetMapping("/{id}")

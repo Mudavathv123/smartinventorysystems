@@ -12,6 +12,15 @@ import com.smartretails.backend.entity.Sale;
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    @Query("select count(s), coalesce(sum(s.total + s.discountTotal),0), coalesce(sum(s.discountTotal),0), coalesce(sum(s.total),0), coalesce(sum(s.taxTotal),0) from Sale s where s.createdAt between :from and :to")
+    @Query("""
+                SELECT
+                    COUNT(s),
+                    COALESCE(SUM(s.total + s.discountTotal), 0),
+                    COALESCE(SUM(s.discountTotal), 0),
+                    COALESCE(SUM(s.total), 0),
+                    COALESCE(SUM(s.taxTotal), 0)
+                FROM Sale s
+                WHERE s.createdAt BETWEEN :from AND :to
+            """)
     Object[] aggregateBetween(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
 }

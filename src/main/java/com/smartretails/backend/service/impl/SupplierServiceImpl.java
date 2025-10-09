@@ -1,5 +1,8 @@
 package com.smartretails.backend.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.smartretails.backend.dto.SupplierDto;
@@ -22,6 +25,14 @@ public class SupplierServiceImpl implements SupplierService {
     @Transactional
     public Supplier createSupplier(Supplier supplier) {
         return supplierRepository.save(supplier);
+    }
+
+    @Override
+    public List<SupplierDto> getAllSuppliers() {
+        return supplierRepository.findAll()
+                .stream()
+                .map(DtoMapper::toSupplierDto)
+                .collect(Collectors.toList());
     }
 
     @Override
