@@ -3,6 +3,7 @@ package com.smartretails.backend.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +33,25 @@ public class ReportsServiceImpl implements ReportsService {
     public SalesReportDto salesSummary(LocalDate from, LocalDate to) {
 
         LocalDateTime startDate = from.atStartOfDay();
-        LocalDateTime endDate = to.plusDays(1).atStartOfDay().minusNanos(1);
+        LocalDateTime endDate = to.atTime(LocalTime.MAX);
 
-        Object[] result = saleRepository.aggregateBetween(startDate, endDate);
-        long tnxs = ((Number) result[0]).longValue();
+        List<Object[]> results = saleRepository.aggregateBetween(startDate, endDate);
 
+        if (results.isEmpty()) {
+            return SalesReportDto.builder()
+                    .from(from.toString())
+                    .to(to.toString())
+                    .transactions(0)
+                    .grossTotal(BigDecimal.ZERO)
+                    .discountTotal(BigDecimal.ZERO)
+                    .netTotal(BigDecimal.ZERO)
+                    .taxTotal(BigDecimal.ZERO)
+                    .build();
+        }
+
+        Object[] result = results.get(0);
+
+        long transactions = ((Number) result[0]).longValue();
         BigDecimal gross = (BigDecimal) result[1];
         BigDecimal discount = (BigDecimal) result[2];
         BigDecimal net = (BigDecimal) result[3];
@@ -45,11 +60,11 @@ public class ReportsServiceImpl implements ReportsService {
         return SalesReportDto.builder()
                 .from(from.toString())
                 .to(to.toString())
-                .transactions(tnxs)
+                .transactions(transactions)
                 .grossTotal(gross)
+                .discountTotal(discount)
                 .netTotal(net)
                 .taxTotal(tax)
-                .discountTotal(discount)
                 .build();
     }
 

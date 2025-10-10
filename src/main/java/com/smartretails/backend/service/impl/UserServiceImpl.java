@@ -29,7 +29,8 @@ public class UserServiceImpl implements UserService {
                 .map(user -> UserResponseDto.builder()
                         .id(user.getId())
                         .username(user.getUsername())
-                        .role("ROLE_" + user.getRole().name())
+                        .role(user.getRole().name())
+                        .password(user.getPasswordHash())
                         .build())
                 .toList();
     }
@@ -40,7 +41,8 @@ public class UserServiceImpl implements UserService {
                 .map(user -> UserResponseDto.builder()
                         .id(user.getId())
                         .username(user.getUsername())
-                        .role("ROLE_" + user.getRole().name())
+                        .role(user.getRole().name())
+                        .password(user.getPasswordHash())
                         .build())
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -71,6 +73,8 @@ public class UserServiceImpl implements UserService {
                         existing.setPasswordHash(passwordEncoder.encode(user.getPassword()));
                     }
                     existing.setRole(Role.valueOf("ROLE_" + user.getRole().toUpperCase()));
+
+                    userRepository.save(existing);
                     return UserResponseDto.builder()
                             .id(existing.getId())
                             .username(existing.getUsername())

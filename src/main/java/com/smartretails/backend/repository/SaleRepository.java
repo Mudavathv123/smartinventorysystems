@@ -1,6 +1,7 @@
 package com.smartretails.backend.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,6 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
                 FROM Sale s
                 WHERE s.createdAt BETWEEN :from AND :to
             """)
-    Object[] aggregateBetween(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+    List<Object[]> aggregateBetween(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+
 }
