@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 🔓 Authentication APIs — open to everyone
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/signup").hasRole("ADMIN")
+                        .requestMatchers("/auth/signup").permitAll()
 
                         // 🛍️ Product APIs
                         .requestMatchers(HttpMethod.GET, "/api/products/search-products", "/api/products/{id}")
