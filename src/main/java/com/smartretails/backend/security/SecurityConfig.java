@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 🔓 Authentication APIs — open to everyone
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/signup").permitAll()
+                        .requestMatchers("/auth/signup").hasRole("ADMIN")
 
                         // 🛍️ Product APIs
                         .requestMatchers(HttpMethod.GET, "/api/products/search-products", "/api/products/{id}")
@@ -83,7 +83,7 @@ public class SecurityConfig {
 
                         // Reports
                         .requestMatchers("/api/reports/**")
-                        .hasAnyRole("ADMIN", "MANAGER")
+                        .hasAnyRole("ADMIN", "MANAGER","CASHIER")
 
                         // Default rule — all others must be authenticated
                         .anyRequest().authenticated())
