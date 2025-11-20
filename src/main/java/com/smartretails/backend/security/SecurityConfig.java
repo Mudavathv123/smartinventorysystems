@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 🔓 Authentication APIs
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/signup").hasRole("ADMIN")
+                        .requestMatchers("/auth/signup").permitAll()
 
                         // 🛍️ Product APIs
                         .requestMatchers(HttpMethod.GET, "/api/products/search-products", "/api/products/{id}")
@@ -87,6 +87,9 @@ public class SecurityConfig {
                         // 👤 User Management
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
 
+                        //  Payment Management
+                        .requestMatchers("/api/payment/**").hasRole("CASHIER")
+
                         // 📊 Reports
                         .requestMatchers("/api/reports/**").hasAnyRole("ADMIN", "MANAGER", "CASHIER")
 
@@ -107,6 +110,7 @@ public class SecurityConfig {
         // ⚠️ Add both environments for safety
         configuration.setAllowedOrigins(List.of(
                 "https://d1x2sux8i7gb9h.cloudfront.net", // Production (CloudFront)
+                "https://smartinventorybyvinodmudavath.netlify.app",
                 "http://localhost:5173" // Local development
         ));
 

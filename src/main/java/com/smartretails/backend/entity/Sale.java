@@ -58,7 +58,7 @@ public class Sale {
     private List<SaleItem> items = new ArrayList<>();
 
     public enum PaymentMode {
-        CASH, CARD, UPI, WALLET
+        CASH, CARD, UPI, WALLET, RAZORPAY
     }
 
 }

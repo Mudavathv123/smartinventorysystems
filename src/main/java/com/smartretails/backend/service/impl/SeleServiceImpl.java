@@ -44,13 +44,19 @@ public class SeleServiceImpl implements SaleService {
                 BigDecimal taxTotal = BigDecimal.ZERO;
                 BigDecimal discountTotal = saleRequest.getDiscountTotal() != null ? saleRequest.getDiscountTotal()
                                 : BigDecimal.ZERO;
+            Sale.PaymentMode mode;
+            try {
+                mode = Sale.PaymentMode.valueOf(saleRequest.getPaymentMode().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid payment mode: " + saleRequest.getPaymentMode());
+            }
 
                 Sale sale = Sale.builder()
                                 .cashierId(saleRequest.getCashierId())
                                 .discountTotal(discountTotal)
                                 .total(total)
                                 .taxTotal(taxTotal)
-                                .paymentMode(Sale.PaymentMode.valueOf(saleRequest.getPaymentMode()))
+                                .paymentMode(mode)
                                 .build();
 
                 List<SaleItem> items = new ArrayList<>();
